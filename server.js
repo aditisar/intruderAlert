@@ -2,7 +2,15 @@ var express = require('express'),
     morgan  = require('morgan'),
     path = require('path'),
     serialport = require('serialport'),// include the library
-    SerialPort = serialport.SerialPort
+    SerialPort = serialport.SerialPort,
+    Twitter = require('twitter');
+
+var twit = new Twitter({
+  consumer_key: 'ssAPx5FTRkb0dw5PNMXAJ34sx',
+  consumer_secret: 'QaKeD5zH9HLxPzZXQOl14u7C6Ph03jyRcOHmHBoMhNmWqjD2gE',
+  access_token_key: '525309206-qNH12cv4mxnYRSdceCF8cDPH60ENvNXWbO0BfibT',
+  access_token_secret: 'T9kesHYCiSG2vN0GhR6U4jdoVCBtZtrLZyHYJMsS9kq1u'
+});
 
 var servi = require('servi');
 var prevData = "safe";
@@ -23,10 +31,16 @@ function showPortOpen() {
  
 function saveLatestData(data) {
    console.log(data);
-   if(prevData[0]=='I' && latestData[0]=='s') intruderCount+=1;
+   if(prevData[0]=='I' && latestData[0]=='s') {
+    intruderCount+=1;
+    twit.post('statuses/update', {status: 'INTRUDER ALERT!'},  function(error, tweet, response){
+      if(error) throw error;
+      console.log(tweet);  // Tweet body. 
+      console.log(response);  // Raw response object. 
+    });
+  }
    prevData = latestData;
    latestData = data; 
-   console.log("there are "+ intruderCount +"intruders");
 }
  
 function showPortClose() {
