@@ -1,3 +1,5 @@
+//used https://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-serial-communication-with-node-js/
+
 var express = require('express'),
     morgan  = require('morgan'),
     path = require('path'),
@@ -5,6 +7,7 @@ var express = require('express'),
     SerialPort = serialport.SerialPort,
     Twitter = require('twitter');
 
+//tweets to my account for now..................only got 1 phone number
 var twit = new Twitter({
   consumer_key: 'ssAPx5FTRkb0dw5PNMXAJ34sx',
   consumer_secret: 'QaKeD5zH9HLxPzZXQOl14u7C6Ph03jyRcOHmHBoMhNmWqjD2gE',
@@ -23,8 +26,6 @@ var myPort = new SerialPort('/dev/tty.usbmodem1411', {
    parser: serialport.parsers.readline("\r\n")
  });
 
-
-
 function showPortOpen() {
    console.log('port open. Data rate: ' + myPort.options.baudRate);
 }
@@ -32,8 +33,11 @@ function showPortOpen() {
 function saveLatestData(data) {
    console.log(data);
    if(prevData[0]=='I' && latestData[0]=='s') {
+    var today = new Date();
+    var UTCstring = today.toUTCString();
+    var message = 'Intruder in the physcomp room! ' + UTCstring;
     intruderCount+=1;
-    twit.post('statuses/update', {status: 'INTRUDER ALERT!'},  function(error, tweet, response){
+    twit.post('statuses/update', {status: message},  function(error, tweet, response){
       if(error) throw error;
       console.log(tweet);  // Tweet body. 
       console.log(response);  // Raw response object. 
