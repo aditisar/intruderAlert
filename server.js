@@ -9,10 +9,10 @@ var express = require('express'),
 
 //tweets to my account for now..................only got 1 phone number
 var twit = new Twitter({
-  consumer_key: 'ssAPx5FTRkb0dw5PNMXAJ34sx',
-  consumer_secret: 'QaKeD5zH9HLxPzZXQOl14u7C6Ph03jyRcOHmHBoMhNmWqjD2gE',
-  access_token_key: '525309206-qNH12cv4mxnYRSdceCF8cDPH60ENvNXWbO0BfibT',
-  access_token_secret: 'T9kesHYCiSG2vN0GhR6U4jdoVCBtZtrLZyHYJMsS9kq1u'
+  consumer_key: 'redacted',
+  consumer_secret: 'redacted',
+  access_token_key: 'redacted',
+  access_token_secret: 'redacted'
 });
 
 var servi = require('servi');
@@ -20,7 +20,7 @@ var prevData = "safe";
 var latestData = "";
 var intruderCount = 0; 
 
-var myPort = new SerialPort('/dev/tty.usbmodem1411', {
+var myPort = new SerialPort('/dev/tty.usbmodem1421', {
    baudRate: 9600,
    // look for return and newline at the end of each data packet:
    parser: serialport.parsers.readline("\r\n")
@@ -59,8 +59,6 @@ myPort.on('open', showPortOpen);
 myPort.on('data', saveLatestData);
 myPort.on('close', showPortClose);
 myPort.on('error', showError);
-
-
 
 var app = new servi(false); // servi instance
 app.port(33333);             // port number to run the server on
